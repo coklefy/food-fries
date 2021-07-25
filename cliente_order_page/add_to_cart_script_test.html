@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>shopping cart js code</title>
+</head>
+<body>
+	<h1> shopping cart test code</h1>
+<script>
+	var cart= [];
+	var Item = function (id_pietanza,immagine, nome_pietanza, quantita, prezzo){
+		this.id_pietanza=id_pietanza;
+		this.immagine=immagine;
+		this.nome_pietanza=nome_pietanza;
+		this.quantita=quantita;
+		this.prezzo=prezzo;
+	}
+
+
+	function addItemToCart(id_pietanza,immagine,nome_pietanza,quantita,prezzo){
+		for(var i in cart) {
+			if(cart[i].id_pietanza === id_pietanza){
+				cart[i].quantita ++;
+				return;
+			}
+		}
+		var item = new Item(id_pietanza,immagine,nome_pietanza,quantita,prezzo);
+		cart.push(item);	
+		saveCart();
+	}
+
+	/*addItemToCart(1,"imagine","cibo",1,10);
+	addItemToCart(1,"imagine","cibo",1,10);
+	addItemToCart(2,"imagine","cibo",50,10);
+	console.log(cart);
+	console.log(cart[0]);
+	console.log(cart[0].id_pietanza); */
+
+	
+	
+	function removeItemFromCart(id_pietanza){ 	//remove solo una pietanza
+		for ( var i in cart ) {
+			if (cart[i].id_pietanza === id_pietanza) {
+				cart[i].quantita --;
+				if (cart[i].quantita === 0) {
+					cart.splice(i,1);
+				}
+				break;
+			}
+		}
+		saveCart();
+	}
+	
+	
+	//removeItemFromCart(1);
+	//removeItemFromCart(1);
+
+	function removeItemFromCartAll(id_pietanza) {
+		for ( var i in cart ) {
+			if (cart[i].id_pietanza === id_pietanza) {
+				cart.splice(i,1);
+				break;
+			}
+		}
+		saveCart();
+	}	
+	//removeItemFromCartAll(1);
+
+	function clearCart() {
+		cart= [];
+		saveCart();		
+	}
+
+	function countCart() {
+		var totaleCount = 0;
+		for (var i in cart){
+			totaleCount += cart[i].quantita;
+		}
+		return totaleCount;
+	}
+	
+//	console.log(countCart());
+	
+	
+	function totalCart() {// ritorna il costo totale 
+		var totalCost=0;
+		for (var i in cart ){
+			var prezzo=cart[i].prezzo * cart[i].quantita;
+			totalCost += prezzo;
+		}
+		return totalCost;
+	}
+	
+	//console.log(totalCart());
+
+	function listCart() {//array of item
+		var cartCopy= [];
+		for (var i in cart ) {
+			var item = cart[i];
+			var itemCopy = {};
+			for ( var p in item ) {
+				itemCopy[p] = item[p];
+			}
+			cartCopy.push(itemCopy);
+		}
+		return cartCopy;
+	}
+	/* *********************************
+	var array = listCart();
+	array[0].nome_pietanza = "Mistake";
+	console.log( array() ); */
+
+	function saveCart() {
+		localStorage.setItem("shoppingCart", JSON.stringify(cart));
+	
+	}
+	
+	// localStorage.setItem("userrname", "joe"); // nel browser Application-->local Storage -->file://
+	
+	
+	function loadCart() {
+		cart = JSON.parse(localStorage.getItem("shoppingCart"));
+	
+	}
+	
+	/*loadCart();
+	var array = listCart();
+	console.log(array); */
+	
+</script>
+</body>
+</html>
+
